@@ -1,0 +1,4 @@
+- name: Installing python3 venv
+      ansible.builtin.apt:
+        name: python3-venv
+        state: present
