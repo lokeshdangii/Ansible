@@ -1,0 +1,13 @@
+---
+- name: Updatin apt packages on ubuntu/debian
+  hosts: my_servers
+  become: yes
+  gather_facts: yes
+  remote_user: ubuntu
+
+  tasks:
+    - name: "Update Repository cache"
+      apt:
+        update_cache: true
+        cache_valid_time: 3600
+        force_apt_get: true
