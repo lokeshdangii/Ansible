@@ -29,7 +29,7 @@
         state: present
 
     - name: Installing required Python packages
-      pip:
+      ansible.builtin.pip:
         name:
           - blinker==1.6.3
           - click==8.1.7
@@ -85,7 +85,7 @@
       become_user: root
 
     - name: Print Database Setup Completed Message
-      debug:
+      ansible.builtin.debug:
         msg: "Database setup completed successfully."
 
 # Step3 --> Application Setup
@@ -104,7 +104,3 @@
 
     - name: Run CMS Application
       ansible.builtin.command: "python3 /home/ubuntu/CMS/app.py &"
-
-    - name: Print CMS is running
-      debug:
-        msg: "CMS Application is availabe on port"
