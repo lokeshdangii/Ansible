@@ -121,7 +121,7 @@
         chdir: /home/ubuntu/CMS
 
     # Copy file wsgi.py to remote hosts CMS directory 
-    - name: Creating the wsgi entry point
+    - name: Create the wsgi entry point
       ansible.builtin.copy:
         src: /home/lokesh/Desktop/Decode/AWS_Script/Gunicorn/wsgi.py
         dest: /home/ubuntu/CMS
@@ -167,3 +167,33 @@
     - name: Print Database Setup Completed Message
       ansible.builtin.debug:
         msg: "Setup completed successfully."
+
+
+# nginx setup
+
+    - name: Install Nginx
+      ansible.builtin.apt:
+        name: nginx
+        state: present
+      become: yes
+
+    - name: Copy Nginx configuration file
+      ansible.builtin.copy:
+        src: /home/lokesh/Desktop/Decode/AWS_Script/Gunicorn/cms
+        dest: /etc/nginx/sites-available/
+        mode: '0644'
+      become: yes
+
+    - name: Create a symbolic link to enable the configuration using command module
+      ansible.builtin.command: ln -s /etc/nginx/sites-available/cms /etc/nginx/sites-enabled/
+      become: yes
+
+    - name: Unlink the default one
+      ansible.builtin.command: unlink /etc/nginx/sites-enabled/default
+      become: yes
+
+    - name: Restart Nginx
+      ansible.builtin.systemd:
+        name: nginx
+        state: restarted
+      become: yes
