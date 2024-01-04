@@ -100,8 +100,13 @@
         clone: yes
         update: yes
 
-    - name: changing directory to CMS
-      ansible.builtin.command: "cd CMS"
+    # - name: changing directory to CMS
+    #   ansible.builtin.command: "cd CMS"
+
+    - name: Change the working directory to CMS/ before executing the command
+      ansible.builtin.shell:
+      args:
+        chdir: /home/ubuntu/CMS/
 
     # Step4 --> Application Setup
     - name: Run application setup commands
@@ -126,6 +131,11 @@
       become: true
 
     # deactivate virtual environment
+    - name: Deactivate the virtual environment
+      ansible.builtin.shell:
+        cmd: "deactivate"
+      args:
+        executable: /bin/bash
 
     # systemd unit file --> cms.service
     - name: CMS Service configuration
@@ -134,10 +144,30 @@
         dest: /home/ubuntu/CMS
       become: true
 
-    # # changing the group associated with home directory because the Nginx www-data user won’t be able to read files in your home directory by default
-    - name: change group ownership of a directory /home/ubuntu
+    # changing the group associated with home directory because the Nginx www-data user won’t be able to read files in your home directory by default
+    - name: Change group ownership of /home/ubuntu to www-data
       ansible.builtin.file:
         path: /home/ubuntu
         state: directory
-        recurse: yes
+        owner: ubuntu
         group: www-data
+        recurse: true
+      become: true
+
+    # start the uWSGI created service --> cms.service :
+    - name: Start the CMS service
+      ansible.builtin.systemd:
+        name: cms
+        state: started
+      become: true
+
+    # enable it so that it starts at boot:
+    - name: Enable the CMS service
+      ansible.builtin.systemd:
+        name: cms
+        enabled: yes
+      become: true
+
+    - name: Print Database Setup Completed Message
+      ansible.builtin.debug:
+        msg: "Setup completed successfully."
