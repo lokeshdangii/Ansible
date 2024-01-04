@@ -107,32 +107,15 @@
       args:
         chdir: /home/ubuntu/CMS
 
-    - name: Change the working directory to CMS and activating the virtyalenv
-      ansible.builtin.command: source env/bin/activate
-      become: yes
-      args:
-        chdir: /home/ubuntu/CMS
-    
-    - name: Installing requirements.txt
-      ansible.builtin.command: pip install -r requirements.txt
-      become: yes
-      args:
-        chdir: /home/ubuntu/CMS
-
-    - name: Installing wheel
-      ansible.builtin.command: pip install wheel
-      become: yes
-      args:
-        chdir: /home/ubuntu/CMS
-
-    - name: Installing gunicorn and flask
-      ansible.builtin.command: pip install gunicorn flask
-      become: yes
-      args:
-        chdir: /home/ubuntu/CMS
-
-    - name: Deacitvating the Virtual Environment
-      ansible.builtin.command: deactivate
+    # Activating the virtualenv and installing packages
+    - name: Activate virtualenv and install requirements
+      ansible.builtin.shell:
+        cmd: |
+          source /home/ubuntu/CMS/env/bin/activate && \
+          pip install -r requirements.txt && \
+          pip install wheel && \
+          pip install gunicorn flask
+        executable: /bin/bash
       become: yes
       args:
         chdir: /home/ubuntu/CMS
