@@ -164,9 +164,9 @@
         enabled: yes
       become: true
 
-    - name: Print Database Setup Completed Message
+    - name: Print CMS Service Setup Completed 
       ansible.builtin.debug:
-        msg: "Setup completed successfully."
+        msg: "CMS Service started successfully."
 
 
 # nginx setup
@@ -197,3 +197,7 @@
         name: nginx
         state: restarted
       become: yes
+
+    - name: Print Nginx Setup Completed 
+      ansible.builtin.debug:
+        msg: "CMS application is served successfully on nginx. Access the application by server public IP Address"
