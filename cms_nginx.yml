@@ -100,28 +100,42 @@
         clone: yes
         update: yes
 
-    # - name: changing directory to CMS
-    #   ansible.builtin.command: "cd CMS"
-
-    - name: Change the working directory to CMS/ before executing the command
-      ansible.builtin.shell:
+    # Creating a Python Virtual Environment
+    - name: Create Python Virtual Environment
+      become: yes
+      command: python3 -m venv env
       args:
-        chdir: /home/ubuntu/CMS/
+        chdir: /home/ubuntu/CMS
 
-    # Step4 --> Application Setup
-    - name: Run application setup commands
-      ansible.builtin.shell:
-        cmd: |
-          python3 -m venv env
-          source env/bin/activate
-          pip install -r requirements.txt
-          pip install wheel
-          pip install gunicorn flask
-          echo "Application setup completed successfully."
+    - name: Change the working directory to CMS and activating the virtyalenv
+      ansible.builtin.command: source env/bin/activate
+      become: yes
       args:
-        executable: /bin/bash
-      become: true
-      become_user: ubuntu
+        chdir: /home/ubuntu/CMS
+    
+    - name: Installing requirements.txt
+      ansible.builtin.command: pip install -r requirements.txt
+      become: yes
+      args:
+        chdir: /home/ubuntu/CMS
+
+    - name: Installing wheel
+      ansible.builtin.command: pip install wheel
+      become: yes
+      args:
+        chdir: /home/ubuntu/CMS
+
+    - name: Installing gunicorn and flask
+      ansible.builtin.command: pip install gunicorn flask
+      become: yes
+      args:
+        chdir: /home/ubuntu/CMS
+
+    - name: Deacitvating the Virtual Environment
+      ansible.builtin.command: deactivate
+      become: yes
+      args:
+        chdir: /home/ubuntu/CMS
 
     # Copy file wsgi.py to remote hosts CMS directory 
     - name: Creating the wsgi entry point
@@ -130,18 +144,11 @@
         dest: /home/ubuntu/CMS
       become: true
 
-    # deactivate virtual environment
-    - name: Deactivate the virtual environment
-      ansible.builtin.shell:
-        cmd: "deactivate"
-      args:
-        executable: /bin/bash
-
     # systemd unit file --> cms.service
     - name: CMS Service configuration
       ansible.builtin.copy:
-        src: /home/lokesh/Desktop/Decode/AWS_Script/Gunicorn/wsgi.py
-        dest: /home/ubuntu/CMS
+        src: /home/lokesh/Desktop/Decode/AWS_Script/Gunicorn/cms.service
+        dest: /etc/systemd/system/
       become: true
 
     # changing the group associated with home directory because the Nginx www-data user won’t be able to read files in your home directory by default
@@ -152,6 +159,12 @@
         owner: ubuntu
         group: www-data
         recurse: true
+      become: true
+
+    # Reload the systemd manager configuration to pick up the changes:
+    - name: Reload systemd manager configuration
+      ansible.builtin.systemd:
+        daemon_reload: yes
       become: true
 
     # start the uWSGI created service --> cms.service :
