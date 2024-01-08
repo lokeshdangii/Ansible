@@ -1,0 +1,13 @@
+---
+- name: Setting up CMS Application on AWS EC2 instance
+  hosts: my_servers
+  become: yes
+  gather_facts: yes
+  remote_user: ubuntu
+
+  roles:
+    - packages_setup
+    - database_setup
+    - cms_and_env_setup
+    - service_setup
+    - nginx_setup

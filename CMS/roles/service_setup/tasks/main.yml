@@ -1,0 +1,50 @@
+---
+# tasks file for service_setup
+#
+    # Copy file wsgi.py to remote hosts CMS directory 
+    - name: Create the wsgi entry point
+      ansible.builtin.copy:
+        src: /home/lokesh/Desktop/Decode/AWS_Script/Gunicorn/wsgi.py
+        dest: /home/ubuntu/CMS
+      become: true
+
+    # systemd unit file --> cms.service
+    - name: CMS Service configuration
+      ansible.builtin.copy:
+        src: /home/lokesh/Desktop/Decode/AWS_Script/Gunicorn/cms.service
+        dest: /etc/systemd/system/
+      become: true
+
+    # changing the group associated with home directory because the Nginx www-data user won’t be able to read files in your home directory by default
+    - name: Change group ownership of /home/ubuntu to www-data
+      ansible.builtin.file:
+        path: /home/ubuntu
+        state: directory
+        owner: ubuntu
+        group: www-data
+        recurse: true
+      become: true
+
+    # Reload the systemd manager configuration to pick up the changes:
+    - name: Reload systemd manager configuration
+      ansible.builtin.systemd:
+        daemon_reload: yes
+      become: true
+
+    # start the uWSGI created service --> cms.service :
+    - name: Start the CMS service
+      ansible.builtin.systemd:
+        name: cms
+        state: started
+      become: true
+
+    # enable it so that it starts at boot:
+    - name: Enable the CMS service
+      ansible.builtin.systemd:
+        name: cms
+        enabled: yes
+      become: true
+
+    - name: Print CMS Service Setup Completed 
+      ansible.builtin.debug:
+        msg: "CMS Service started successfully."
