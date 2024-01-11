@@ -1,2 +1,11 @@
 ---
 # vars file for service_setup
+
+    # Home Directory
+    home_dir_path: "/home/ubuntu"
+
+    # WSGI variables
+    wsgi_file_dest: "/home/ubuntu/CMS/wsgi.py"
+
+    # cms service variables
+    cms_service_dest: "/etc/systemd/system/cms.service"

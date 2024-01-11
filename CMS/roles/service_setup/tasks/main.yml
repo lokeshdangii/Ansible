@@ -4,21 +4,21 @@
     # Copy file wsgi.py to remote hosts CMS directory 
     - name: Create the wsgi entry point
       ansible.builtin.copy:
-        src: /home/lokesh/Desktop/Decode/AWS_Script/Gunicorn/wsgi.py
-        dest: /home/ubuntu/CMS
+        src: files/wsgi.py
+        dest: "{{ wsgi_file_dest }}"
       become: true
 
     # systemd unit file --> cms.service
     - name: CMS Service configuration
-      ansible.builtin.copy:
-        src: /home/lokesh/Desktop/Decode/AWS_Script/Gunicorn/cms.service
-        dest: /etc/systemd/system/
+      ansible.builtin.template:
+        src: service_config.j2
+        dest: "{{ cms_service_dest }}"
       become: true
 
     # changing the group associated with home directory because the Nginx www-data user won’t be able to read files in your home directory by default
     - name: Change group ownership of /home/ubuntu to www-data
       ansible.builtin.file:
-        path: /home/ubuntu
+        path: "{{ home_dir_path }}"
         state: directory
         owner: ubuntu
         group: www-data
