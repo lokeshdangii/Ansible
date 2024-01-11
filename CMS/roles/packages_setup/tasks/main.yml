@@ -1,34 +1,14 @@
 ---
 # tasks file for packages_setup
+#
     - name: "Update Repository cache"
       apt:
         update_cache: true
-        cache_valid_time: 3600
+        cache_valid_time: "{{ apt_update_cache_duration }}"
         force_apt_get: true
 
-    - name: Installing python3 venv
+    - name: Installing required packages
       ansible.builtin.apt:
-        name: python3-venv
+        name: "{{ required_packages }}"
         state: present
-
-    - name: Installing MySQL server
-      ansible.builtin.apt:
-        name: mysql-server
-        state: present
-
-    - name: Installing Python3 pip
-      ansible.builtin.apt:
-        name: python3-pip
-        state: present
-    
-    - name: Installing other dependencies
-      ansible.builtin.apt:
-        name: 
-          - libmysqlclient-dev
-          - python3-dev
-          - build-essential
-          - libssl-dev
-          - libffi-dev
-          - python3-setuptools
-          - pkg-config
       become: true

@@ -1,2 +1,15 @@
 ---
 # vars file for packages_setup
+# Step 1 variables
+apt_update_cache_duration: 3600
+required_packages:
+  - python3-venv
+  - mysql-server
+  - python3-pip
+  - libmysqlclient-dev
+  - python3-dev
+  - build-essential
+  - libssl-dev
+  - libffi-dev
+  - python3-setuptools
+  - pkg-config
