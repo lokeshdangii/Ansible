@@ -42,7 +42,6 @@
         
 
     # Step2 -->  Database setup for the CMS Application
-
     - name: Install build dependencies for mysqlclient
       ansible.builtin.apt:
         name:
@@ -70,7 +69,7 @@
 
     - name: Copy file cardb.sql to remote hosts
       ansible.builtin.copy:
-        src: /home/lokesh/Desktop/Decode/Ansible/ansible_quickstart/cardb.sql
+        src: /home/lokesh/Desktop/Decode/CMS/cardb.sql
         dest: /home/ubuntu/
       become: true
 
