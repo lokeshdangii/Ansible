@@ -1,2 +1,7 @@
 ---
 # vars file for database_setup
+    # Step 2 variables
+    mysql_db_name: "cardb"
+    sql_file_dest_path: "/home/ubuntu/cardb.sql"
+    mysql_user_password: "root"
+    python_interpreter_path: "/usr/bin/python3"

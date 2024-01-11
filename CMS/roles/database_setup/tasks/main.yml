@@ -2,17 +2,6 @@
 # tasks file for database_setup
 # Step2 -->  Database setup for the CMS Application
 
-    - name: Install build dependencies for mysqlclient
-      ansible.builtin.apt:
-        name:
-          - libmysqlclient-dev
-          - build-essential
-          - libssl-dev
-          - libffi-dev
-          - python3-dev
-          - pkg-config
-      become: true
-
     - name: Install MySQL Python module
       ansible.builtin.pip:
         name: mysqlclient
@@ -29,12 +18,12 @@
 
     - name: Copy file cardb.sql to remote hosts
       ansible.builtin.copy:
-        src: /home/lokesh/Desktop/Decode/CMS/cardb.sql
-        dest: /home/ubuntu/
+        src: files/cardb.sql
+        dest: "{{ sql_file_dest_path }}"
       become: true
 
     - name: Import Database Schema
-      shell: "sudo mysql cardb < cardb.sql"
+      shell: "sudo mysql {{ mysql_db_name }} < /home/ubuntu/cardb.sql"
       become_user: root
 
     - name: Update MySQL User Password
