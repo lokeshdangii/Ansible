@@ -8,18 +8,18 @@
       become: yes
 
     - name: Copy Nginx configuration file
-      ansible.builtin.copy:
-        src: /home/lokesh/Desktop/Decode/AWS_Script/Gunicorn/cms
-        dest: /etc/nginx/sites-available/
+      ansible.builtin.template:
+        src: nginx_config.j2
+        dest: "{{ nginx_config_dest }}"
         mode: '0644'
       become: yes
 
     - name: Create a symbolic link to enable the configuration using command module
-      ansible.builtin.command: ln -s /etc/nginx/sites-available/cms /etc/nginx/sites-enabled/
+      ansible.builtin.command: ln -s "{{ nginx_config_dest }}" "{{ nginx_sites_enabled }}"
       become: yes
 
     - name: Unlink the default one
-      ansible.builtin.command: unlink /etc/nginx/sites-enabled/default
+      ansible.builtin.command: unlink "{{ nginx_sites_enabled }}"/default
       become: yes
 
     - name: Restart Nginx

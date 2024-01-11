@@ -1,2 +1,6 @@
 ---
 # vars file for nginx_setup
+# Nginx setup variables
+
+    nginx_config_dest: "/etc/nginx/sites-available/cms"
+    nginx_sites_enabled: "/etc/nginx/sites-enabled/"
