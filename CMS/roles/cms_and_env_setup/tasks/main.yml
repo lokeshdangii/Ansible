@@ -3,13 +3,13 @@
 #
     - name: Create CMS directory
       ansible.builtin.file:
-        path: /home/ubuntu/CMS
+        path: "{{ cms_dir_path }}"
         state: directory
 
     - name: Clone a github repository
       ansible.builtin.git:
-        repo: https://github.com/lokeshdangii/CMS.git
-        dest: /home/ubuntu/CMS
+        repo: "{{ cms_repo_url  }}"
+        dest: "{{ cms_dir_path }}"
         clone: yes
         update: yes
 
@@ -18,17 +18,17 @@
       become: yes
       command: python3 -m venv env
       args:
-        chdir: /home/ubuntu/CMS
+        chdir: "{{ cms_dir_path }}"
 
     # Activating the virtualenv and installing packages
     - name: Activate virtualenv and install requirements
       ansible.builtin.shell:
         cmd: |
-          source /home/ubuntu/CMS/env/bin/activate && \
+          source {{ cms_dir_path }}/env/bin/activate && \
           pip install -r requirements.txt && \
           pip install wheel && \
           pip install gunicorn flask
         executable: /bin/bash
       become: yes
       args:
-        chdir: /home/ubuntu/CMS
+        chdir: "{{ cms_dir_path }}"

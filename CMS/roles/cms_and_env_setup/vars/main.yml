@@ -1,2 +1,9 @@
 ---
 # vars file for cms_and_env_setup
+# variables:-
+    cms_repo_url: "https://github.com/lokeshdangii/CMS.git"
+    cms_dir_path: "/home/ubuntu/CMS"
+    venv_path: "/home/ubuntu/CMS/env"
+    requirements_file: "/home/ubuntu/CMS/requirements.txt"
+    gunicorn_executable: "/home/ubuntu/CMS/env/bin/gunicorn"
+    wsgi_file_path: "/home/ubuntu/CMS/wsgi.py"
