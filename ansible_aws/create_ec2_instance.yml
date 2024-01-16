@@ -1,0 +1,34 @@
+# AWS playbook
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars:
+    key_name: aws_key             # Key used for SSH
+    region: ap-south-1
+    image: ami-03f4878755434977f 
+    id: "example testing"
+    instance_type: t2.micro 
+    # vpc_id: subnet-012345
+    sec_group: "launch-wizard-3"
+    access_key: "AKIARQON6MXQJONTFL7N"
+    secret_key: "jWezaXPss2GpD4hvjkVihqO/CAONxKsmWtY9X+S3"
+    subnet_id: "subnet-0bc0626ad9cacf827"
+
+  tasks:
+    - amazon.aws.ec2_instance:
+        name: "my_instance"
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}" 
+        key_name: "{{ key_name }}"
+        vpc_subnet_id: "{{ subnet_id }}"
+        instance_type: "{{ instance_type }}"
+        security_group: "{{ sec_group }}"
+        network:
+          assign_public_ip: true
+        image_id: "{{ image }}"
+        count: 2
+        region:  "{{ region }}"
+
