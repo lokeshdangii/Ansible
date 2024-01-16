@@ -31,8 +31,7 @@
         daemon_reload: yes
       become: true
 
-    # start the uWSGI created service --> cms.service :
-    - name: Start the CMS service
+    - name: Start the CMS Service
       ansible.builtin.systemd:
         name: cms
         state: started

@@ -11,3 +11,7 @@
     - cms_and_env_setup
     - service_setup
     - nginx_setup
+
+  tasks:
+    - name: Notify handlers
+      meta: flush_handlers

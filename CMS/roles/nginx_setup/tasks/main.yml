@@ -21,12 +21,7 @@
     - name: Unlink the default one
       ansible.builtin.command: unlink "{{ nginx_sites_enabled }}"/default
       become: yes
-
-    - name: Restart Nginx
-      ansible.builtin.systemd:
-        name: nginx
-        state: restarted
-      become: yes
+      notify: Restart Nginx
 
     - name: Print Nginx Setup Completed 
       ansible.builtin.debug:
