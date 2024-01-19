@@ -1,0 +1,20 @@
+---
+- name: Get encrypted variables from ansible vault
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+      - vault_pass.yml
+
+  tasks:
+    - name: Show Server Password from vault variable value 
+      debug:
+        msg: "My server password : {{ server_pass }}"
+
+    - name: Show DB Password from vault variables
+      debug:
+        msg: "My DB password : {{ db_pass }}"
+
+    - name: Show API key from vault variable value
+      debug:
+        msg: "My API Key : {{ api_key }}"
