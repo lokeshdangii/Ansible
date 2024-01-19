@@ -4,7 +4,7 @@
   connection: local
   gather_facts: no
   vars_files:
-      - vault_pass.yml
+      - vault_vars.yml
 
   tasks:
     - name: Show Server Password from vault variable value 
@@ -18,3 +18,5 @@
     - name: Show API key from vault variable value
       debug:
         msg: "My API Key : {{ api_key }}"
+
+    
