@@ -1,0 +1,32 @@
+# Playbook to create security group in AWS
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars:
+    key_name: aws_key
+    region: ap-south-1
+    image: ami-03f4878755434977f 
+    id: "web-app2"
+    sec_group_name: "{{ id }}-sec"
+    access_key: "AKIARQON6MXQJONTFL7N"
+    secret_key: "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"
+
+  tasks:
+    - name: Create security group
+      ec2_group:
+          name: "{{ sec_group_name }}"
+          description: "Sec group for app {{ id }}"
+          # vpc_id: 12345
+          region: "{{ region }}"
+          aws_access_key: "{{access_key}}"
+          aws_secret_key: "{{secret_key}}"
+          rules:
+            - proto: tcp
+              ports:
+                - 22
+              cidr_ip: 0.0.0.0/0
+              rule_desc: allow all on ssh port
+      register: result_sec_group

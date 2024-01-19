@@ -6,12 +6,10 @@
   gather_facts: False
 
   vars:
-    key_name: aws_key             # Key used for SSH
+    key_name: aws_key          
     region: ap-south-1
-    image: ami-03f4878755434977f 
-    id: "example testing"
-    instance_type: t2.micro 
-    # vpc_id: subnet-012345
+    image: ami-03f4878755434977f
+    instance_type: t2.micro
     sec_group: "launch-wizard-3"
     access_key: "AKIARQON6MXQJONTFL7N"
     secret_key: "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"
@@ -19,7 +17,7 @@
 
   tasks:
     - amazon.aws.ec2_instance:
-        name: "my_instance"
+        name: "my_instance2"
         aws_access_key: "{{ access_key }}"
         aws_secret_key: "{{ secret_key }}" 
         key_name: "{{ key_name }}"

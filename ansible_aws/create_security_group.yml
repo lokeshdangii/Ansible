@@ -1,0 +1,63 @@
+# Playbook to create security group in AWS
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+
+  vars:
+    key_name: aws_key
+    region: ap-south-1
+    image: ami-03f4878755434977f 
+    id: "web-app2"
+    sec_group: "{{ id }}-sec"
+    access_key: "AKIARQON6MXQJONTFL7N"
+    secret_key: "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"
+
+  tasks:
+    - name: Create security group
+      amazon.aws.ec2_security_group:
+          name: "{{ sec_group }}"
+          description: "Sec group for app {{ id }}"
+          # vpc_id: 12345
+          region: "{{ region }}"
+          aws_access_key: "{{access_key}}"
+          aws_secret_key: "{{secret_key}}"
+          rules:
+            - proto: tcp
+              from_port: 80
+              to_port: 80
+              cidr_ip: 0.0.0.0/0
+              rule_desc: allow all on port 80
+            - proto: tcp
+              from_port: 22
+              to_port: 22
+              cidr_ip: 0.0.0.0/0
+            - proto: tcp
+              from_port: 443
+              to_port: 443
+      register: result_sec_group
+
+
+
+
+  #  tasks: 
+  #   - name: Creating AWS Security Group
+  #     amazon.aws.ec2_security_group:
+  #       name: ansible_sg
+  #       description: an example EC2 group
+  #       vpc_id: vpc-04699538335d5cd19
+  #       rules:
+  #         - proto: tcp
+  #           from_port: 80
+  #           to_port: 80
+  #           cidr_ip: 0.0.0.0/0
+  #           rule_desc: allow all on port 80
+  #         - proto: tcp
+  #           from_port: 22
+  #           to_port: 22
+  #           cidr_ip: 0.0.0.0/0
+  #         - proto: tcp
+  #           from_port: 443
+  #           to_port: 443
+
