@@ -1,0 +1,17 @@
+---
+- name: Get encrypted variables from ansible vault
+  hosts: localhost
+  connection: local
+  gather_facts: no
+  vars_files:
+      - db.yml
+      - server.yml
+
+  tasks:
+    - name: Show Server Name from vault-id server@prompt
+      debug:
+        msg: "My server name : {{ server_name }}"
+
+    - name: Show DB name from vault-id db@prompt
+      debug:
+        msg: "My DB name : {{ db_name }}"
