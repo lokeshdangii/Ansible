@@ -4,15 +4,8 @@
 - hosts: localhost
   connection: local
   gather_facts: False
-
-  vars:
-    key_name: aws_key
-    region: ap-south-1
-    image: ami-03f4878755434977f 
-    id: "web-app2"
-    sec_group: "{{ id }}-sec"
-    access_key: "AKIARQON6MXQJONTFL7N"
-    secret_key: "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"
+  vars_file:
+      - sg_vars.yml
 
   tasks:
     - name: Create security group
