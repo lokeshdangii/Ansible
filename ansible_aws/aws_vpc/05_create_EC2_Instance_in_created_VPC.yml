@@ -1,0 +1,22 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+      - vpc_vars.yml
+
+  tasks:
+    - amazon.aws.ec2_instance:
+        name: "my_ec2_server"
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}" 
+        key_name: aws_key
+        vpc_subnet_id: subnet-0722c0a4f47739b0b
+        instance_type: t2.micro
+        security_group: sg-08090072ded9d60b4
+        network:
+          assign_public_ip: true
+        image_id: ami-03f4878755434977f
+        count: 1
+        region:  ap-south-1
