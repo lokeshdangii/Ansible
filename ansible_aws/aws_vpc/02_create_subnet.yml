@@ -1,0 +1,21 @@
+# AWS playbook
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+      - vpc_vars.yml
+
+  tasks:
+    - name: Create subnet for database servers
+      amazon.aws.ec2_vpc_subnet:
+        state: present
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        vpc_id: vpc-0d835d92151d9a18f
+        cidr: 10.0.1.0/24
+        region: ap-south-1
+        tags:
+          Name: Demo_VPC Public Subnet
+      register: demo_vpc_public_subnet
