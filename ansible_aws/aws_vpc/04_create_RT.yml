@@ -1,0 +1,23 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+      - vpc_vars.yml
+
+  tasks:
+    # Basic creation example:
+    - name: Set up public subnet route table
+      amazon.aws.ec2_vpc_route_table:
+        vpc_id: vpc-0e7b4e3d5d827e380
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        region: ap-south-1
+        tags:
+          Name: Public_Demo_RT
+        subnets:
+          - subnet-0722c0a4f47739b0b
+        routes:
+          - dest: 0.0.0.0/0
+            gateway_id: igw-0a5f90dbb15ea35c4
