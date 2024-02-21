@@ -12,6 +12,6 @@
         state: absent
         aws_access_key: "{{ access_key }}"
         aws_secret_key: "{{ secret_key }}"
-        vpc_id: vpc-0d835d92151d9a18f
+        vpc_id: vpc-0e7b4e3d5d827e380
         cidr: 10.0.1.0/24
         region: ap-south-1
