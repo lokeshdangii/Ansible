@@ -1,0 +1,17 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+      - vpc_vars.yml
+
+  tasks:
+    - name: Remove subnet for database servers
+      amazon.aws.ec2_vpc_subnet:
+        state: absent
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        vpc_id: vpc-0e7b4e3d5d827e380
+        cidr: 10.0.1.0/24
+        region: ap-south-1
