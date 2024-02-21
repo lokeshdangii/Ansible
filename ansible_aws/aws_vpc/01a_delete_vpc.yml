@@ -1,0 +1,16 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+      - vpc_vars.yml
+
+  tasks:
+    - name: Delete an existing VPC
+      amazon.aws.ec2_vpc_net:
+        vpc_id: vpc-0d835d92151d9a18f
+        state: absent
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        region: ap-south-1
