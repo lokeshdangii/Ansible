@@ -1,0 +1,33 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+      - vpc_vars.yml
+
+  tasks:
+    - name: Delete Internet gateway using the attached vpc id
+      amazon.aws.ec2_vpc_igw:
+        state: absent
+        vpc_id: vpc-0e7b4e3d5d827e380
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        region: ap-south-1
+      register: vpc_igw_delete
+
+    - name: Print result of Internet gateway deletion
+      debug:
+        var: vpc_igw_delete
+    # - name: Delete Internet gateway with gateway id
+    #   amazon.aws.ec2_vpc_igw:
+    #     state: absent
+    #     internet_gateway_id: igw-abcdefgh
+    #   register: vpc_igw_delete
+
+    # - name: Delete Internet gateway ensuring attached VPC is correct
+    #   amazon.aws.ec2_vpc_igw:
+    #     state: absent
+    #     internet_gateway_id: igw-abcdefgh
+    #     vpc_id: vpc-abcdefgh
+    #   register: vpc_igw_delete
