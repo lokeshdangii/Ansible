@@ -1,0 +1,18 @@
+---
+
+- hosts: localhost
+  connection: local
+  gather_facts: False
+  vars_files:
+      - vpc_vars.yml
+
+  tasks:
+    - name: delete route table
+      amazon.aws.ec2_vpc_route_table:
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        vpc_id: vpc-0e7b4e3d5d827e380
+        region: ap-south-1
+        route_table_id: rtb-0c2caf16d5b35f408
+        lookup: id
+        state: absent
