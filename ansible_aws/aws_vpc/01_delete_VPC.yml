@@ -7,4 +7,11 @@
       - vpc_vars.yml
 
   tasks:
+    - name: Delete an existing VPC
+      amazon.aws.ec2_vpc_net:
+        vpc_id: vpc-0d641b6e006a0e3e2
+        aws_access_key: "{{ access_key }}"
+        aws_secret_key: "{{ secret_key }}"
+        region: ap-south-1
+        state: absent
     
