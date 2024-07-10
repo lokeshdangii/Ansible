@@ -1,6 +1,6 @@
 ---
 - name: Setting up CMS Application on AWS EC2 instance
-  hosts: my_servers
+  hosts: all
   become: yes
   gather_facts: yes
   remote_user: ubuntu
@@ -54,12 +54,10 @@
       become: true
 
     - name: Install MySQL Python module
-      ansible.builtin.pip:
-        name: mysqlclient
+      ansible.builtin.apt:
+        name: python3-mysqldb
         state: present
       become: true
-      vars:
-        ansible_python_interpreter: /usr/bin/python3
 
     - name: Create new databases with name cardb
       community.mysql.mysql_db:
